@@ -1,0 +1,9 @@
+[project]
+name = "python-machine-test"
+version = "0.1.0"
+description = "Python machine test for AI/ML developers"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas",
+]
