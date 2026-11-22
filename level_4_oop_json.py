@@ -7,23 +7,46 @@ class Patient:
     """Patient record. Synthetic data only."""
 
     def __init__(self, id, name, age, glucose):
-        pass
+        self.id = id
+        self.name = name
+        self.age = age
+        self.glucose = glucose
+
+
 
     def get_patient_details(self):
-        pass
+        return {
+            "id":self.id,
+            "name":self.name,
+            "age":self.age,
+            "glucose":self.glucose
+        }
 
 
 def divide(numerator, denominator):
-    """Q14: Divide two numbers, returning (result, error_message).
+    """Q14: Divide two numbers, returning (result, error_message)."""
 
-    Exactly one of the two is None. Errors are reported, not hidden.
-    """
-    pass
+    if not isinstance(numerator, (int, float)) or isinstance(numerator, bool):
+        return None, "Numerator must be a number"
 
+    if not isinstance(denominator, (int, float)) or isinstance(denominator, bool):
+        return None, "Denominator must be a number"
+
+    if denominator == 0:
+        return None, "Cannot divide by zero"
+
+    return numerator / denominator, None
 
 def json_round_trip(data):
     """Q15: Dict -> JSON string (json.dumps) -> dict (json.loads)."""
-    pass
+
+    # Step 1: Convert dictionary into JSON string
+    json_string = json.dumps(data)
+
+    # Step 2: Convert JSON string back into dictionary
+    result = json.loads(json_string)
+
+    return result
 
 
 def handle_api_response(response):
@@ -31,7 +54,29 @@ def handle_api_response(response):
 
     Result: {"ok": bool, "patient_id": ..., "result": ..., "error": ...}
     """
-    pass
+    if not isinstance(response, dict):
+        return {"ok": False, "patient_id": None, "result": None,
+                "error": "response must be a dictionary"}
+
+    if response.get("status") != "success":
+        return {"ok": False, "patient_id": None, "result": None,
+                "error": "API is not success"}
+
+    data = response.get("data")
+    if not isinstance(data, dict):
+        return {"ok": False, "patient_id": None, "result": None,
+                "error": "data is missing or invalid"}
+
+    if "patient_id" not in data:
+        return {"ok": False, "patient_id": None, "result": None,
+                "error": "patient_id is missing"}
+
+    if "result" not in data:
+        return {"ok": False, "patient_id": None, "result": None,
+                "error": "result is missing"}
+
+    return {"ok": True, "patient_id": data["patient_id"],
+            "result": data["result"], "error": None}
 
 
 def run():
