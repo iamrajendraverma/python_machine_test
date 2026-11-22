@@ -11,17 +11,23 @@ def filter_patients(patients, threshold):
     The input list and its dictionaries are not modified. An empty input
     returns an empty list.
     """
-    pass
-
+    filter_by_threashold  = [item for item in patients 
+    if item["glucose"]>threshold]
+    
+    return filter_by_threashold
 
 def normalize_text(text):
     """Q10: Strip leading/trailing whitespace and lowercase the text."""
-    pass
+    strip_text  = text.strip()
+    lower_case  = strip_text.lower()
+    return lower_case
+
 
 
 def names_above_150(records):
     """Q11: Patient names with glucose > 150, using a list comprehension."""
-    pass
+    names = [item["name"] for item in  records if item["glucose"]>150]
+    return names
 
 
 def chunk_text(text, chunk_size):
@@ -30,7 +36,24 @@ def chunk_text(text, chunk_size):
     - Empty or whitespace-only text returns an empty list.
     - chunk_size must be a positive integer, otherwise ValueError is raised.
     """
-    pass
+    if chunk_size <=0:
+        ValueError("chunk size must be greater then zero")
+    
+    if not text or not text.strip():
+        return[]
+    words  = text.split()
+    
+    checks = []
+    for item in range(0,len(words),chunk_size):
+                chunk = " ".join(words[item:item + chunk_size])
+                checks.append(chunk)
+    
+    return checks
+
+
+       
+
+    return checks
 
 
 DOCUMENT = """
@@ -47,7 +70,7 @@ def run():
     print("Q11:", names_above_150(patients))
     print("Q12:")
     for chunk in chunk_text(DOCUMENT, 3):
-        print("  -", chunk)
+         print("  -", chunk)
 
 
 if __name__ == "__main__":
